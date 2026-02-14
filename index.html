@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habiba ❤️</title>
+
+<style>
+body{
+margin:0;
+overflow:hidden;
+background:black;
+color:white;
+text-align:center;
+font-family:Arial, sans-serif;
+}
+
+/* النجوم */
+#stars{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* العناوين */
+h1{
+margin-top:120px;
+font-size:40px;
+}
+
+button{
+padding:15px 30px;
+font-size:18px;
+border:none;
+border-radius:40px;
+cursor:pointer;
+margin:15px;
+}
+
+#yes{
+background:#ff2e63;
+color:white;
+}
+
+#no{
+background:#444;
+color:white;
+position:absolute;
+}
+
+#passwordBox,
+#final{
+display:none;
+}
+
+input{
+padding:10px;
+border-radius:20px;
+border:none;
+font-size:16px;
+text-align:center;
+}
+
+.neon{
+font-size:45px;
+text-shadow:0 0 5px #ff00de,
+0 0 15px #ff00de,
+0 0 30px #ff2e63;
+animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+from{opacity:0.6;}
+to{opacity:1;}
+}
+
+.heart{
+position:absolute;
+font-size:24px;
+animation:up 4s linear forwards;
+}
+
+@keyframes up{
+from{transform:translateY(0);}
+to{transform:translateY(-800px);opacity:0;}
+}
+
+.shake{
+animation:shake 0.4s;
+}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+25%{transform:translateX(-8px);}
+75%{transform:translateX(8px);}
+100%{transform:translateX(0);}
+}
+
+.name span{
+display:inline-block;
+font-size:50px;
+animation:bounce 1s infinite alternate;
+}
+
+@keyframes bounce{
+from{transform:translateY(0);}
+to{transform:translateY(-15px);}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div id="main">
+<h1>Will you be my Valentine Habiba? 💘</h1>
+<button id="yes">Yes ❤️</button>
+<button id="no">No 💔</button>
+</div>
+
+<div id="passwordBox">
+<h1>Enter Birthday Password 🎂 (3 tries)</h1>
+<input type="password" id="pass">
+<br><br>
+<button onclick="checkPass()">Unlock</button>
+<p id="tries"></p>
+</div>
+
+<div id="final">
+<div class="name">
+<span>H</span><span>a</span><span>b</span>
+<span>i</span><span>b</span><span>a</span>
+</div>
+<h2 class="neon">Happy Valentine Day يا روحي ♥️</h2>
+</div>
+
+<audio id="kiss" src="https://www.soundjay.com/human/kiss-01.mp3"></audio>
+
+<script>
+let yes=document.getElementById("yes");
+let no=document.getElementById("no");
+let main=document.getElementById("main");
+let passBox=document.getElementById("passwordBox");
+let final=document.getElementById("final");
+let kiss=document.getElementById("kiss");
+let tries=3;
+
+/* زرار No يهرب */
+document.addEventListener("mousemove",function(e){
+let rect=no.getBoundingClientRect();
+let dx=e.clientX-rect.left;
+let dy=e.clientY-rect.top;
+let dist=Math.sqrt(dx*dx+dy*dy);
+if(dist<80){
+no.style.left=Math.random()*window.innerWidth+"px";
+no.style.top=Math.random()*window.innerHeight+"px";
+}
+});
+
+/* Yes */
+yes.onclick=function(){
+main.style.display="none";
+passBox.style.display="block";
+kiss.play();
+document.body.classList.add("shake");
+setTimeout(()=>document.body.classList.remove("shake"),400);
+};
+
+/* باسورد */
+function checkPass(){
+let input=document.getElementById("pass").value;
+if(input==="892006"){
+passBox.style.display="none";
+final.style.display="block";
+loveHearts();
+}else{
+tries--;
+document.getElementById("tries").innerText="Attempts left: "+tries;
+brokenHearts();
+document.body.classList.add("shake");
+setTimeout(()=>document.body.classList.remove("shake"),400);
+if(tries<=0){
+setTimeout(function(){
+window.location.href="about:blank";
+},1500);
+}
+}
+}
+
+/* قلوب حب */
+function loveHearts(){
+for(let i=0;i<40;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*window.innerWidth+"px";
+h.style.top=window.innerHeight+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+}
+}
+
+/* قلوب مكسورة */
+function brokenHearts(){
+for(let i=0;i<20;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💔";
+h.style.left=Math.random()*window.innerWidth+"px";
+h.style.top=window.innerHeight+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+}
+}
+
+/* نجوم */
+let canvas=document.getElementById("stars");
+let ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+let stars=[];
+for(let i=0;i<150;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2
+});
+}
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
+stars.forEach(s=>{
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+ctx.fill();
+});
+requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
